@@ -1,28 +1,33 @@
 # Import pygame
 import pygame
 import sys
+import os
 
-# Import constants, player
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT, ASTEROID_MIN_RADIUS, ASTEROID_KINDS, ASTEROID_SPAWN_RATE, ASTEROID_MAX_RADIUS
+# Import settings for constants, player, asteroidfield, shooting
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, FRAMERATE, ASTEROID_MIN_RADIUS, ASTEROID_KINDS, ASTEROID_SPAWN_RATE, ASTEROID_MAX_RADIUS, BACKGROUND_IMAGE_PATH
 from player import Player
-from asteroidfield import *
+from asteroidfield import AsteroidField, Asteroid
 from shooting import Shot
 
 def main():
 	# Init PyGame
 	pygame.init()
 	print(f'Starting asteroids!')
+
 	# FPS / Time tracking
 	clock = pygame.time.Clock()
-	framerate = 60
 	dt = 0
+
 	# Screen obj.
 	screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 	print(f'Screen width: {SCREEN_WIDTH}')
 	print(f'Screen height: {SCREEN_HEIGHT}')
-	print(f'Framerate: {framerate}')
-	# Background color
-	color = (0, 0, 0) #RRGGBB
+	print(f'Framerate: {FRAMERATE}')
+
+	# Setting background image
+	background_image = pygame.image.load(BACKGROUND_IMAGE_PATH)
+	background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
 	# Player spawn coordinates
 	player_spawn_x = SCREEN_WIDTH / 2
 	player_spawn_y = SCREEN_HEIGHT / 2
@@ -59,7 +64,6 @@ def main():
 				sys.exit()
 
 			for bullet in group_shots:
-				#bullet.collision_detection(asteroid)
 				if asteroid.collision_detection(bullet):
 					bullet.kill()
 					asteroid.split()
@@ -67,12 +71,12 @@ def main():
 		# Checking for shot-asteroid collision
 
 		# Screen fill
-		screen.fill(color, rect=None)
+		screen.blit(background_image,(0, 0))
 		# Drawing drawable objects
 		for element in group_drawable:
 			element.draw(screen)
 		# Calc tick / limiting to framerate
-		dt = clock.tick(framerate) / 1000
+		dt = clock.tick(FRAMERATE) / 1000
 		# Screen update
 		pygame.display.flip()
 		
