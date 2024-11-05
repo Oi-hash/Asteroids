@@ -6,6 +6,7 @@ import sys
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, ASTEROID_MIN_RADIUS, ASTEROID_KINDS, ASTEROID_SPAWN_RATE, ASTEROID_MAX_RADIUS
 from player import Player
 from asteroidfield import *
+from shooting import Shot
 
 def main():
 	# Init PyGame
@@ -30,11 +31,13 @@ def main():
 	group_updatable = pygame.sprite.Group()
 	group_drawable = pygame.sprite.Group()
 	group_asteroids = pygame.sprite.Group()
+	group_shots = pygame.sprite.Group()
 
 	# Adding instances to groups
 	Player.containers = (group_updatable, group_drawable)
 	Asteroid.containers = (group_asteroids, group_drawable, group_updatable)
 	AsteroidField.containers = (group_updatable)
+	Shot.containers = (group_drawable, group_updatable)
 
 	# Objects
 	player = Player(player_spawn_x, player_spawn_y)
