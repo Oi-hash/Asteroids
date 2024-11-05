@@ -25,7 +25,6 @@ class Player(CircleShape):
 
 	def update(self, dt):
 		keys = pygame.key.get_pressed()
-		print(f'DT on update: {dt}')
 		if keys[pygame.K_a]:
 			Player.rotate(self, -dt)
 		if keys[pygame.K_d]:

@@ -1,5 +1,6 @@
 # Import pygame
 import pygame
+import sys
 
 # Import constants, player
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, ASTEROID_MIN_RADIUS, ASTEROID_KINDS, ASTEROID_SPAWN_RATE, ASTEROID_MAX_RADIUS
@@ -48,6 +49,12 @@ def main():
 		# Updating updatable elements
 		for element in group_updatable:
 			element.update(dt)
+		# Checking for player-asteroid collision
+		for element in group_asteroids:
+			element.collision_detection(player)
+			if element.collision_detection(player):
+				print(f'Game Over!')
+				sys.exit()
 		# Screen fill
 		screen.fill(color, rect=None)
 		# Drawing drawable objects
