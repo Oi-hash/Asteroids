@@ -3,7 +3,7 @@ import pygame
 import sys
 import os
 
-# Import settings for constants, player, asteroidfield, shooting
+# Import constants, player, asteroidfield, shooting
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, FRAMERATE, ASTEROID_MIN_RADIUS, ASTEROID_KINDS, ASTEROID_SPAWN_RATE, ASTEROID_MAX_RADIUS, BACKGROUND_IMAGE_PATH, PLAYER_SPAWN_X, PLAYER_SPAWN_Y
 from player import Player
 from asteroidfield import AsteroidField, Asteroid
@@ -67,10 +67,9 @@ def main():
 					bullet.kill()
 					asteroid.split()
 
-		# Checking for shot-asteroid collision
-
-		# Screen fill
+		# Screen blit with background image
 		screen.blit(background_image,(0, 0))
+
 		# Drawing drawable objects
 		for element in group_drawable:
 			element.draw(screen)
