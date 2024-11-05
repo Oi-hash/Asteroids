@@ -37,7 +37,7 @@ def main():
 	Player.containers = (group_updatable, group_drawable)
 	Asteroid.containers = (group_asteroids, group_drawable, group_updatable)
 	AsteroidField.containers = (group_updatable)
-	Shot.containers = (group_drawable, group_updatable)
+	Shot.containers = (group_drawable, group_updatable, group_shots)
 
 	# Objects
 	player = Player(player_spawn_x, player_spawn_y)
@@ -52,12 +52,20 @@ def main():
 		# Updating updatable elements
 		for element in group_updatable:
 			element.update(dt)
-		# Checking for player-asteroid collision
-		for element in group_asteroids:
-			element.collision_detection(player)
-			if element.collision_detection(player):
+		# Checking for player-asteroid / shot-asteroid collision
+		for asteroid in group_asteroids:
+			if asteroid.collision_detection(player):
 				print(f'Game Over!')
 				sys.exit()
+
+			for bullet in group_shots:
+				#bullet.collision_detection(asteroid)
+				if asteroid.collision_detection(bullet):
+					bullet.kill()
+					asteroid.split()
+
+		# Checking for shot-asteroid collision
+
 		# Screen fill
 		screen.fill(color, rect=None)
 		# Drawing drawable objects
