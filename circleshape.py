@@ -1,6 +1,10 @@
 # Modules
 import pygame
 
+# Player triangle setup
+player_color = (255, 255, 255) # RRGGBB
+player_width = 2
+
 # Base class for game objects
 class CircleShape(pygame.sprite.Sprite):
     def __init__(self, x, y, radius):
@@ -16,8 +20,8 @@ class CircleShape(pygame.sprite.Sprite):
 
     def draw(self, screen):
         # sub-classes must override
-        pass
-
+	    pygame.draw.polygon(screen, player_color, self.triangle(), player_width)
+       
     def update(self, dt):
         # sub-classes must override
         pass
