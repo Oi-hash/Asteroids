@@ -4,7 +4,7 @@ import sys
 import os
 
 # Import settings for constants, player, asteroidfield, shooting
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT, FRAMERATE, ASTEROID_MIN_RADIUS, ASTEROID_KINDS, ASTEROID_SPAWN_RATE, ASTEROID_MAX_RADIUS, BACKGROUND_IMAGE_PATH
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, FRAMERATE, ASTEROID_MIN_RADIUS, ASTEROID_KINDS, ASTEROID_SPAWN_RATE, ASTEROID_MAX_RADIUS, BACKGROUND_IMAGE_PATH, PLAYER_SPAWN_X, PLAYER_SPAWN_Y
 from player import Player
 from asteroidfield import AsteroidField, Asteroid
 from shooting import Shot
@@ -28,10 +28,6 @@ def main():
 	background_image = pygame.image.load(BACKGROUND_IMAGE_PATH)
 	background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-	# Player spawn coordinates
-	player_spawn_x = SCREEN_WIDTH / 2
-	player_spawn_y = SCREEN_HEIGHT / 2
-
 	# Groups
 	group_updatable = pygame.sprite.Group()
 	group_drawable = pygame.sprite.Group()
@@ -45,7 +41,7 @@ def main():
 	Shot.containers = (group_drawable, group_updatable, group_shots)
 
 	# Objects
-	player = Player(player_spawn_x, player_spawn_y)
+	player = Player(PLAYER_SPAWN_X, PLAYER_SPAWN_Y)
 	asteroid = AsteroidField()
 	
 	# Game loop
@@ -59,9 +55,12 @@ def main():
 			element.update(dt)
 		# Checking for player-asteroid / shot-asteroid collision
 		for asteroid in group_asteroids:
-			if asteroid.collision_detection(player):
-				print(f'Game Over!')
-				sys.exit()
+			if asteroid.collision_detection(player) and player.damage_cooldown <= 0:
+				player.reduce_lives()
+				player.respawn()
+				if player.lives == 0:
+					print(f'Game Over!')
+					sys.exit()
 
 			for bullet in group_shots:
 				if asteroid.collision_detection(bullet):
